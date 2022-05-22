@@ -26,4 +26,4 @@ pub use buffered::{BufReader, BufWriter, LineWriter};
 #[cfg(feature = "nightly")]
 pub use util::copy;
 
-pub use empty::Empty;
+pub use empty::{empty,Empty};
