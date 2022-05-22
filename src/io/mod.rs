@@ -5,7 +5,7 @@ mod error;
 mod impls;
 mod traits;
 mod util;
-mod empty;
+mod emptys;
 
 #[cfg(not(feature = "std"))]
 pub use cursor::Cursor;
@@ -26,4 +26,4 @@ pub use buffered::{BufReader, BufWriter, LineWriter};
 #[cfg(feature = "nightly")]
 pub use util::copy;
 
-pub use empty::{empty,Empty};
+pub use emptys::{empty,Empty};
