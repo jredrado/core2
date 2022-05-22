@@ -174,3 +174,21 @@ impl Write for alloc::vec::Vec<u8> {
         Ok(())
     }
 }
+
+#[cfg(feature = "alloc")]
+impl<T: Read + ?Sized> Read for alloc::boxed::Box<T> {
+    fn read(&mut self, buf: &mut [u8]) -> Result<usize> {
+        (**self).read(buf)
+    }
+}
+
+#[cfg(feature = "alloc")]
+impl<T: Write + ?Sized> Write for alloc::boxed::Box<T> {
+    fn write(&mut self, buf: &[u8]) -> Result<usize> {
+        (**self).write(buf)
+    }
+
+    fn flush(&mut self) -> Result<()> {
+        (**self).flush()
+    }
+}
