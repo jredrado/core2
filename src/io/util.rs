@@ -1,9 +1,10 @@
 #[cfg(feature = "nightly")]
 use core::mem::MaybeUninit;
 
-#[cfg(feature = "nightly")]
+
 use crate::io::{ErrorKind, Read, Write};
 
+/*
 #[cfg(feature = "nightly")]
 pub fn copy<R: ?Sized, W: ?Sized, const S: usize>(
     reader: &mut R,
@@ -35,6 +36,27 @@ where
             Err(e) => return Err(e),
         };
         writer.write_all(unsafe { &buf.assume_init_ref()[..len] })?;
+        written += len as u64;
+    }
+}
+*/
+
+const DEFAULT_BUF_SIZE: usize = 8 * 1024;
+
+pub fn copy<R: ?Sized, W: ?Sized>(reader: &mut R, writer: &mut W) -> crate::io::Result<u64>
+where
+    R: Read,
+    W: Write,
+{
+    let mut buf = [0u8; DEFAULT_BUF_SIZE];
+    let mut written = 0;
+    loop {
+        let len = match reader.read(&mut buf) {
+            Ok(0) => return Ok(written),
+            Ok(len) => len,
+            Err(e) => return Err(e),
+        };
+        writer.write_all(&buf[..len])?;
         written += len as u64;
     }
 }
